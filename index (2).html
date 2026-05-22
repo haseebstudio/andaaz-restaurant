@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faros Oxford Circus 🇮🇹 — Flavours of the Sun</title>
+  <meta name="description" content="Faros Oxford Circus — Modern Mediterranean & Italian cuisine in the heart of London. Fresh, seasonal, soulful." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==============================
+       CSS VARIABLES & RESET
+    ============================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:    #f8f4ed;
+      --parchment:#efe8d8;
+      --terracotta:#c8613b;
+      --rust:     #a8442a;
+      --gold:     #c9a84c;
+      --olive:    #5a6b3c;
+      --charcoal: #2a2520;
+      --ink:      #1a1612;
+      --smoke:    #7a7268;
+      --white:    #ffffff;
+
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ==============================
+       TYPOGRAPHY HELPERS
+    ============================== */
+    .serif { font-family: var(--serif); }
+    .eyebrow {
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    /* ==============================
+       NAVBAR
+    ============================== */
+    #navbar {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 1.2rem 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .4s, box-shadow .4s;
+    }
+    #navbar.scrolled {
+      background: rgba(248,244,237,.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(0,0,0,.07);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: .01em;
+      transition: color .3s;
+    }
+    .nav-logo span { color: var(--terracotta); font-style: italic; }
+    .nav-logo .flag { font-style: normal; margin-left: .15em; }
+
+    .nav-links {
+      display: flex; gap: 2rem; align-items: center;
+    }
+    .nav-links a {
+      font-size: .82rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      transition: color .3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--terracotta);
+      transition: width .3s;
+    }
+    .nav-links a:hover { color: var(--terracotta); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--terracotta);
+      color: var(--white) !important;
+      padding: .55rem 1.4rem;
+      border-radius: 2px;
+      font-size: .78rem !important;
+      transition: background .3s !important;
+    }
+    .nav-cta:hover { background: var(--rust) !important; color: var(--white) !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; cursor: pointer; background: none; border: none;
+      padding: .4rem;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--ink); transition: .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      display: none; flex-direction: column;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      background: var(--cream); z-index: 999;
+      align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--serif); font-size: 2.2rem; font-weight: 300;
+      color: var(--ink); letter-spacing: .04em;
+      transition: color .3s;
+    }
+    .mobile-menu a:hover { color: var(--terracotta); }
+    .mobile-menu .close-btn {
+      position: absolute; top: 1.4rem; right: 5%;
+      font-size: 1.8rem; cursor: pointer; background: none; border: none;
+      color: var(--charcoal);
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      background: var(--ink);
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(160deg, rgba(26,22,18,.7) 0%, rgba(26,22,18,.45) 50%, rgba(200,97,59,.25) 100%),
+        url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.06);
+      animation: heroZoom 12s ease forwards;
+    }
+    @keyframes heroZoom {
+      to { transform: scale(1); }
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 1.5rem;
+      max-width: 860px;
+    }
+
+    /* Animated title effect */
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: .04em;
+      line-height: 1;
+      margin-bottom: .3rem;
+      overflow: hidden;
+    }
+    .hero-name .word {
+      display: inline-block;
+      animation: slideUp .9s cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-name .word:nth-child(2) { animation-delay: .15s; }
+    .hero-name .word.italic-gold {
+      font-style: italic;
+      color: var(--gold);
+      animation-delay: .3s;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .hero-flag {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      animation: slideUp .9s .45s cubic-bezier(.16,1,.3,1) both;
+      display: inline-block; margin-left: .3rem;
+    }
+
+    .hero-tagline {
+      font-family: var(--sans);
+      font-size: clamp(.9rem, 2vw, 1.15rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.82);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin: 1.4rem 0 2.5rem;
+      animation: fadeIn 1s .7s both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-sub {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      color: var(--gold);
+      margin-bottom: 2.8rem;
+      animation: fadeIn 1s .85s both;
+    }
+
+    .hero-btns {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      justify-content: center;
+      animation: fadeIn 1s 1s both;
+    }
+    .btn-primary {
+      background: var(--terracotta);
+      color: var(--white);
+      padding: .85rem 2.2rem;
+      border-radius: 2px;
+      font-size: .82rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background .3s, transform .2s;
+      border: 2px solid var(--terracotta);
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--rust); border-color: var(--rust); transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: .85rem 2.2rem;
+      border-radius: 2px;
+      font-size: .82rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background .3s, color .3s, transform .2s;
+      border: 2px solid rgba(255,255,255,.6);
+      cursor: pointer;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.12); border-color: var(--white); transform: translateY(-2px); }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--ink);
+      padding: .85rem 2.2rem;
+      border-radius: 2px;
+      font-size: .82rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background .3s, transform .2s;
+      border: 2px solid var(--gold);
+      cursor: pointer;
+    }
+    .btn-gold:hover { background: #b8922e; border-color: #b8922e; transform: translateY(-2px); }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: var(--white);
+      padding: .85rem 2rem;
+      border-radius: 2px;
+      font-size: .82rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      display: inline-flex; align-items: center; gap: .5rem;
+      transition: background .3s, transform .2s;
+      border: 2px solid #25D366;
+      cursor: pointer;
+    }
+    .btn-whatsapp:hover { background: #1ebe5b; transform: translateY(-2px); }
+
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      color: rgba(255,255,255,.5);
+      font-size: .75rem; letter-spacing: .15em;
+      text-transform: uppercase;
+      z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    }
+    .scroll-hint::after {
+      content: '';
+      display: block; width: 1px; height: 40px;
+      background: rgba(255,255,255,.35);
+      animation: lineDrop 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ==============================
+       SECTION WRAPPER
+    ============================== */
+    section { padding: 5.5rem 5%; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* ==============================
+       ABOUT
+    ============================== */
+    #about { background: var(--parchment); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-images {
+      position: relative;
+    }
+    .about-img-main {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.15);
+    }
+    .about-img-inset {
+      position: absolute;
+      bottom: -2rem; right: -2rem;
+      width: 200px; height: 200px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 6px solid var(--parchment);
+      box-shadow: 0 12px 40px rgba(0,0,0,.15);
+    }
+    .about-text { padding-right: 1rem; }
+    .about-text .eyebrow { margin-bottom: 1rem; }
+    .about-text .section-title { margin-bottom: 1.5rem; }
+    .about-text p {
+      color: var(--smoke);
+      margin-bottom: 1.2rem;
+      font-size: .97rem;
+    }
+    .about-text p strong { color: var(--charcoal); font-weight: 500; }
+    .about-badges {
+      display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .badge {
+      text-align: center;
+    }
+    .badge .num {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--terracotta);
+      line-height: 1;
+    }
+    .badge .label {
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-top: .25rem;
+    }
+
+    /* ==============================
+       MENU
+    ============================== */
+    #menu { background: var(--cream); }
+
+    .menu-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 3.5rem;
+    }
+    .menu-header .eyebrow { margin-bottom: .8rem; }
+    .menu-header p {
+      color: var(--smoke);
+      margin-top: 1rem;
+      font-size: .95rem;
+    }
+
+    .menu-tabs {
+      display: flex; justify-content: center; gap: .5rem;
+      margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: .55rem 1.6rem;
+      border: 1.5px solid var(--parchment);
+      background: transparent;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      cursor: pointer;
+      transition: .3s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: var(--white);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+    .menu-card {
+      background: var(--white);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+      transition: transform .3s, box-shadow .3s;
+      cursor: default;
+    }
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.12);
+    }
+    .menu-card img {
+      width: 100%; height: 200px; object-fit: cover;
+      transition: transform .5s;
+    }
+    .menu-card:hover img { transform: scale(1.05); }
+    .menu-card-body { padding: 1.4rem 1.4rem 1.6rem; }
+    .menu-card-body .dish-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: .35rem;
+    }
+    .menu-card-body .dish-desc {
+      font-size: .84rem;
+      color: var(--smoke);
+      margin-bottom: .9rem;
+    }
+    .menu-card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .price {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--terracotta);
+    }
+    .diet-tag {
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .7rem;
+      border-radius: 100px;
+      background: var(--parchment);
+      color: var(--olive);
+      font-weight: 500;
+    }
+
+    .menu-panel { display: none; }
+    .menu-panel.active { display: block; }
+
+    /* ==============================
+       SERVICES
+    ============================== */
+    #services { background: var(--ink); color: var(--white); }
+
+    .services-header { text-align: center; margin-bottom: 3.5rem; }
+    .services-header .eyebrow { color: var(--gold); }
+    .services-header .section-title { color: var(--white); }
+    .services-header .section-title em { color: var(--gold); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.6rem;
+    }
+    .service-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 6px;
+      padding: 2.4rem 2rem;
+      transition: background .3s, transform .3s, border-color .3s;
+    }
+    .service-card:hover {
+      background: rgba(200,97,59,.12);
+      border-color: rgba(200,97,59,.4);
+      transform: translateY(-4px);
+    }
+    .service-icon {
+      font-size: 2.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .service-card h3 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: .7rem;
+    }
+    .service-card p {
+      font-size: .88rem;
+      color: rgba(255,255,255,.55);
+      line-height: 1.7;
+    }
+
+    /* ==============================
+       GALLERY STRIP
+    ============================== */
+    #gallery { background: var(--parchment); padding: 3rem 0; overflow: hidden; }
+
+    .gallery-eyebrow {
+      text-align: center;
+      padding: 0 5% 2.5rem;
+    }
+    .gallery-strip {
+      display: flex; gap: 1rem;
+      animation: scrollStrip 28s linear infinite;
+      width: max-content;
+    }
+    .gallery-strip:hover { animation-play-state: paused; }
+    @keyframes scrollStrip {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .gallery-strip img {
+      width: 280px; height: 200px; object-fit: cover;
+      border-radius: 4px; flex-shrink: 0;
+      transition: transform .3s;
+    }
+    .gallery-strip img:hover { transform: scale(1.04); }
+
+    /* ==============================
+       CONTACT
+    ============================== */
+    #contact { background: var(--cream); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .contact-info .eyebrow { margin-bottom: 1rem; }
+    .contact-info .section-title { margin-bottom: 1.5rem; }
+    .contact-info p {
+      color: var(--smoke);
+      font-size: .94rem;
+      margin-bottom: 2rem;
+    }
+    .contact-details { display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .contact-item .icon {
+      font-size: 1.2rem;
+      margin-top: .1rem;
+      flex-shrink: 0;
+      width: 2.2rem; height: 2.2rem;
+      background: var(--parchment);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .contact-item .info-text .label {
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      font-weight: 500;
+      margin-bottom: .15rem;
+    }
+    .contact-item .info-text a,
+    .contact-item .info-text span {
+      font-size: .93rem;
+      color: var(--charcoal);
+    }
+    .contact-item .info-text a:hover { color: var(--terracotta); }
+
+    .contact-social { margin-top: 2rem; display: flex; gap: 1rem; }
+    .social-link {
+      width: 2.4rem; height: 2.4rem;
+      border-radius: 50%;
+      background: var(--parchment);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      color: var(--charcoal);
+      transition: background .3s, color .3s, transform .2s;
+      text-decoration: none;
+    }
+    .social-link:hover {
+      background: var(--terracotta);
+      color: var(--white);
+      transform: translateY(-3px);
+    }
+
+    /* Booking form */
+    .booking-form {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 2.5rem 2.2rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,.08);
+    }
+    .booking-form h3 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 1.6rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block;
+      font-size: .73rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: .45rem;
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: .75rem 1rem;
+      border: 1.5px solid var(--parchment);
+      background: var(--cream);
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: .88rem;
+      color: var(--charcoal);
+      transition: border-color .3s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--terracotta);
+      background: var(--white);
+    }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      width: 100%; padding: .95rem;
+      background: var(--terracotta);
+      color: var(--white);
+      border: none; border-radius: 4px;
+      font-family: var(--sans);
+      font-size: .82rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .3s, transform .2s;
+    }
+    .form-submit:hover { background: var(--rust); transform: translateY(-2px); }
+
+    /* ==============================
+       MAP SECTION
+    ============================== */
+    #map-section { padding: 0; height: 380px; position: relative; }
+    #map-section iframe {
+      width: 100%; height: 100%; border: none;
+      filter: sepia(20%) saturate(0.8);
+    }
+    .map-overlay {
+      position: absolute; top: 50%; right: 8%;
+      transform: translateY(-50%);
+      background: var(--white);
+      padding: 1.8rem 2rem;
+      border-radius: 6px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.15);
+      max-width: 280px;
+    }
+    .map-overlay h4 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--ink);
+      margin-bottom: .4rem;
+    }
+    .map-overlay p {
+      font-size: .82rem;
+      color: var(--smoke);
+      line-height: 1.5;
+    }
+    .map-overlay a {
+      display: inline-block;
+      margin-top: .8rem;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      font-weight: 500;
+      border-bottom: 1px solid currentColor;
+      transition: color .3s;
+    }
+    .map-overlay a:hover { color: var(--rust); }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,.45);
+      padding: 3.5rem 5% 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .footer-brand .logo {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: .6rem;
+    }
+    .footer-brand .logo span { color: var(--gold); font-style: italic; }
+    .footer-brand p {
+      font-size: .85rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-brand .social-row { display: flex; gap: .7rem; margin-top: 1.2rem; }
+    .footer-col h4 {
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul li {
+      margin-bottom: .6rem;
+    }
+    .footer-col ul li a {
+      font-size: .85rem;
+      color: rgba(255,255,255,.42);
+      transition: color .3s;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-col address {
+      font-style: normal;
+      font-size: .84rem;
+      line-height: 1.85;
+    }
+    .footer-bottom {
+      max-width: 1200px; margin: 1.8rem auto 0;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: .78rem;
+    }
+    .footer-bottom .dev-credit {
+      color: var(--gold);
+      font-size: .78rem;
+    }
+
+    /* ==============================
+       WHATSAPP FLOATING BTN
+    ============================== */
+    .whatsapp-float {
+      position: fixed; bottom: 2rem; right: 2rem;
+      z-index: 999;
+      width: 56px; height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 24px rgba(37,211,102,.45);
+      transition: transform .3s, box-shadow .3s;
+      text-decoration: none;
+    }
+    .whatsapp-float:hover {
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 10px 32px rgba(37,211,102,.5);
+    }
+    .whatsapp-float svg { width: 28px; height: 28px; fill: #fff; }
+
+    /* ==============================
+       ANIMATIONS (SCROLL REVEAL)
+    ============================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==============================
+       RESPONSIVE
+    ============================== */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-img-inset { display: none; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .map-overlay { right: 4%; max-width: 230px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .map-overlay { position: static; transform: none; margin: 0 1rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+      #map-section { height: auto; }
+      #map-section iframe { height: 260px; }
+      .about-badges { gap: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      section { padding: 4rem 4%; }
+      .booking-form { padding: 1.8rem 1.4rem; }
+    }
+
+    /* ==============================
+       OPENING HOURS BANNER
+    ============================== */
+    .hours-banner {
+      background: var(--terracotta);
+      color: var(--white);
+      text-align: center;
+      padding: .7rem 5%;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .hours-banner span { opacity: .7; margin: 0 .8rem; }
+
+    /* ==============================
+       TOAST NOTIFICATION
+    ============================== */
+    .toast {
+      position: fixed; bottom: 5.5rem; right: 2rem; z-index: 9999;
+      background: var(--ink); color: var(--white);
+      padding: 1rem 1.5rem; border-radius: 4px;
+      font-size: .85rem;
+      transform: translateX(110%);
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+      border-left: 3px solid var(--terracotta);
+    }
+    .toast.show { transform: translateX(0); }
+  </style>
+</head>
+<body>
+
+  <!-- HOURS BANNER -->
+  <div class="hours-banner">
+    Open Daily: Mon–Fri 12pm–11pm <span>|</span> Sat–Sun 11am–11pm <span>|</span> Reservations: <a href="tel:+447796016991" style="color:#fff;text-decoration:underline">+44 7796 016991</a>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">
+      <em>Faros</em> Oxford Circus <span class="flag">🇮🇹</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Book a Table</a></li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" id="closeMenu">✕</button>
+    <a href="#about" onclick="closeNav()">About</a>
+    <a href="#menu" onclick="closeNav()">Menu</a>
+    <a href="#services" onclick="closeNav()">Services</a>
+    <a href="#contact" onclick="closeNav()">Contact</a>
+    <a href="#contact" onclick="closeNav()" style="color:var(--terracotta)">Book a Table</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-name">
+        <span class="word">Faros</span>
+        <span class="word italic-gold">Oxford Circus</span>
+        <span class="hero-flag">🇮🇹</span>
+      </h1>
+      <p class="hero-tagline">Mediterranean & Italian Cuisine · London</p>
+      <p class="hero-sub">Flavours of the Sun</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Book a Table</a>
+        <a href="#menu" class="btn-outline">View Menu</a>
+        <a href="https://wa.me/447796016991" target="_blank" rel="noopener" class="btn-whatsapp">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          WhatsApp Us
+        </a>
+        <a href="tel:+447796016991" class="btn-gold">📞 Call Now</a>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid reveal">
+        <div class="about-images">
+          <img class="about-img-main"
+            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
+            alt="Faros restaurant dining room" loading="lazy" />
+          <img class="about-img-inset"
+            src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=80"
+            alt="Fresh Italian pasta" loading="lazy" />
+        </div>
+        <div class="about-text">
+          <p class="eyebrow">Our Story</p>
+          <h2 class="section-title">Honouring Tradition,<br><em>Inspiring Innovation</em></h2>
+          <p>Tucked into the vibrant energy of Great Portland Street, Faros Oxford Circus is a place where <strong>Mediterranean warmth meets Italian craftsmanship</strong>. We opened our doors with one simple idea — that great food should feel like a gathering, not just a meal.</p>
+          <p>Every dish we serve carries the soul of coastal Mediterranean kitchens. Sun-ripened tomatoes, hand-rolled pasta, the kind of olive oil that makes you pause. We source <strong>seasonal ingredients</strong>, work with trusted suppliers, and cook in a way that respects where everything comes from.</p>
+          <p>This isn't fine dining behind glass. It's the sort of place where the table feels like yours, the staff know their regulars by name, and the food keeps you coming back — week after week, season after season.</p>
+          <div class="about-badges">
+            <div class="badge">
+              <div class="num">5+</div>
+              <div class="label">Years in London</div>
+            </div>
+            <div class="badge">
+              <div class="num">100%</div>
+              <div class="label">Fresh Ingredients</div>
+            </div>
+            <div class="badge">
+              <div class="num">2</div>
+              <div class="label">London Locations</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <div class="menu-header reveal">
+        <p class="eyebrow">What We Serve</p>
+        <h2 class="section-title">Timeless Flavours,<br><em>Contemporary Spirit</em></h2>
+        <p>Our menus change with the seasons. Below is a selection of what you'll typically find — ask your server about today's specials and anything off-menu.</p>
+      </div>
+
+      <div class="menu-tabs">
+        <button class="tab-btn active" onclick="switchTab('starters')">Starters</button>
+        <button class="tab-btn" onclick="switchTab('mains')">Mains</button>
+        <button class="tab-btn" onclick="switchTab('pasta')">Pasta & Risotto</button>
+        <button class="tab-btn" onclick="switchTab('desserts')">Desserts</button>
+        <button class="tab-btn" onclick="switchTab('drinks')">Drinks</button>
+      </div>
+
+      <!-- Starters -->
+      <div class="menu-panel active" id="starters">
+        <div class="menu-grid">
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=600&q=75" alt="Burrata" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Burrata & Heirloom Tomato</div>
+              <div class="dish-desc">Creamy burrata, slow-roasted heirlooms, aged balsamic, Sicilian olive oil, basil</div>
+              <div class="menu-card-footer">
+                <span class="price">£12.50</span>
+                <span class="diet-tag">Vegetarian</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1542834369-f10ebf06d3e0?w=600&q=75" alt="Bruschetta" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Grilled Bruschetta</div>
+              <div class="dish-desc">Toasted sourdough, crushed cherry tomatoes, garlic, capers, fresh oregano</div>
+              <div class="menu-card-footer">
+                <span class="price">£8.50</span>
+                <span class="diet-tag">Vegan</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=75" alt="Calamari" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Crispy Calamari</div>
+              <div class="dish-desc">Lightly floured squid rings, lemon aioli, chilli flakes, fresh parsley</div>
+              <div class="menu-card-footer">
+                <span class="price">£11.00</span>
+                <span class="diet-tag">Seafood</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mains -->
+      <div class="menu-panel" id="mains">
+        <div class="menu-grid">
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=75" alt="Sea Bass" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Pan-Seared Sea Bass</div>
+              <div class="dish-desc">Whole fillet, saffron potatoes, roasted cherry tomatoes, salsa verde, capers</div>
+              <div class="menu-card-footer">
+                <span class="price">£26.00</span>
+                <span class="diet-tag">Seafood</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=75" alt="Lamb Chops" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Rosemary Lamb Cutlets</div>
+              <div class="dish-desc">Grilled rack of lamb, herb crust, roasted root vegetables, mint jus</div>
+              <div class="menu-card-footer">
+                <span class="price">£32.00</span>
+                <span class="diet-tag">Signature</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=600&q=75" alt="Chicken" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Pollo alla Diavola</div>
+              <div class="dish-desc">Butterflied spiced chicken, charred lemon, Calabrian chilli, roasted peppers</div>
+              <div class="menu-card-footer">
+                <span class="price">£22.00</span>
+                <span class="diet-tag">Spicy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pasta -->
+      <div class="menu-panel" id="pasta">
+        <div class="menu-grid">
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=75" alt="Carbonara" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Spaghetti Carbonara</div>
+              <div class="dish-desc">Egg yolk, guanciale, Pecorino Romano, black pepper — proper Roman style</div>
+              <div class="menu-card-footer">
+                <span class="price">£17.50</span>
+                <span class="diet-tag">Classic</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&q=75" alt="Tagliatelle" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Tagliatelle al Ragù</div>
+              <div class="dish-desc">Slow-cooked beef & pork ragù, handmade tagliatelle, Parmigiano Reggiano</div>
+              <div class="menu-card-footer">
+                <span class="price">£19.00</span>
+                <span class="diet-tag">House Special</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&q=75" alt="Risotto" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Wild Mushroom Risotto</div>
+              <div class="dish-desc">Arborio rice, porcini & chestnut mushrooms, white wine, truffle oil, chives</div>
+              <div class="menu-card-footer">
+                <span class="price">£18.50</span>
+                <span class="diet-tag">Vegetarian</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desserts -->
+      <div class="menu-panel" id="desserts">
+        <div class="menu-grid">
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=75" alt="Tiramisu" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Classic Tiramisù</div>
+              <div class="dish-desc">Savoiardi, espresso, Marsala mascarpone, dark cocoa — made fresh daily</div>
+              <div class="menu-card-footer">
+                <span class="price">£9.00</span>
+                <span class="diet-tag">House Made</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=75" alt="Panna Cotta" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Vanilla Panna Cotta</div>
+              <div class="dish-desc">Set cream, Madagascan vanilla, seasonal berry coulis, mint</div>
+              <div class="menu-card-footer">
+                <span class="price">£8.00</span>
+                <span class="diet-tag">Gluten Free</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=600&q=75" alt="Affogato" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Affogato al Caffè</div>
+              <div class="dish-desc">Double espresso, house vanilla gelato, amaretto on the side</div>
+              <div class="menu-card-footer">
+                <span class="price">£7.50</span>
+                <span class="diet-tag">Dessert</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drinks -->
+      <div class="menu-panel" id="drinks">
+        <div class="menu-grid">
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=75" alt="Wine" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Curated Wine List</div>
+              <div class="dish-desc">Italian & Mediterranean selections — by the glass or bottle. Ask your server.</div>
+              <div class="menu-card-footer">
+                <span class="price">From £7.50</span>
+                <span class="diet-tag">By Glass</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=75" alt="Cocktails" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Aperitivo Hour</div>
+              <div class="dish-desc">Aperol Spritz, Negroni, Campari Soda, Limoncello — crafted to sip slowly</div>
+              <div class="menu-card-footer">
+                <span class="price">From £9.00</span>
+                <span class="diet-tag">Cocktails</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card reveal">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=75" alt="Coffee" loading="lazy">
+            <div class="menu-card-body">
+              <div class="dish-name">Italian Coffee Bar</div>
+              <div class="dish-desc">Espresso, Americano, Flat White, Cappuccino — sourced from northern Italian roasters</div>
+              <div class="menu-card-footer">
+                <span class="price">From £3.20</span>
+                <span class="diet-tag">Coffee</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="services-header reveal">
+        <p class="eyebrow">What We Offer</p>
+        <h2 class="section-title">More Than <em>Just a Meal</em></h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">🍽️</div>
+          <h3>Dine In</h3>
+          <p>A relaxed, welcoming dining room right in the heart of Oxford Circus. Perfect for date nights, family lunches, or a solo escape with a glass of Barolo and a good pasta.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🎉</div>
+          <h3>Private Events</h3>
+          <p>Planning something special? We host birthday dinners, corporate lunches, and celebration evenings. Speak to us about semi-private and full buyout options.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">📦</div>
+          <h3>Takeaway</h3>
+          <p>Craving Faros at home? Our takeaway menu brings the same kitchen quality — packed with care and ready when you are. Call ahead or walk in.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🥂</div>
+          <h3>Aperitivo & Drinks</h3>
+          <p>Not ready to sit down just yet? Pull up to the bar. Our Aperitivo selection — spritz, negroni, chilled whites — is made to ease you into the evening properly.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🧑‍🍳</div>
+          <h3>Chef's Tasting Menu</h3>
+          <p>For something a little more considered, ask about our seasonal tasting menu. Available Friday & Saturday evenings, with optional wine pairing.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">💼</div>
+          <h3>Business Dining</h3>
+          <p>Close deals over good food. We're five minutes from Oxford Circus tube, with reliable, unhurried service and a menu that impresses without being fussy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY STRIP -->
+  <section id="gallery">
+    <div class="gallery-eyebrow">
+      <p class="eyebrow" style="text-align:center">Moments at Faros</p>
+    </div>
+    <div style="overflow:hidden">
+      <div class="gallery-strip">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=560&q=70" alt="Restaurant" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=560&q=70" alt="Interior" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=560&q=70" alt="Pasta" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=560&q=70" alt="Seafood" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=560&q=70" alt="Wine" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=560&q=70" alt="Dessert" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=560&q=70" alt="Restaurant" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=560&q=70" alt="Interior" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=560&q=70" alt="Pasta" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=560&q=70" alt="Seafood" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=560&q=70" alt="Wine" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=560&q=70" alt="Dessert" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <p class="eyebrow">Find Us & Reach Out</p>
+          <h2 class="section-title">Come Join <em>Our Table</em></h2>
+          <p>Whether you want to book a table, ask about the menu, or plan a private event — we're here. Drop in, give us a ring, or send a message below.</p>
+
+          <div class="contact-details">
+            <div class="contact-item">
+              <div class="icon">📍</div>
+              <div class="info-text">
+                <div class="label">Address</div>
+                <a href="https://maps.app.goo.gl/7LpnG7Z3EhNKYD8K6" target="_blank" rel="noopener">22 Great Portland St, London W1W 8QS, UK</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="icon">📞</div>
+              <div class="info-text">
+                <div class="label">Phone</div>
+                <a href="tel:+447796016991">+44 7796 016991</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="icon">🌐</div>
+              <div class="info-text">
+                <div class="label">Website</div>
+                <a href="https://www.farosrestaurant.co.uk" target="_blank" rel="noopener">farosrestaurant.co.uk</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="icon">🕐</div>
+              <div class="info-text">
+                <div class="label">Hours</div>
+                <span>Mon–Fri: 12pm–11pm · Sat–Sun: 11am–11pm</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-social">
+            <a href="https://www.instagram.com/farosrestaurant/" target="_blank" rel="noopener" class="social-link" title="Instagram">📸</a>
+            <a href="https://wa.me/447796016991" target="_blank" rel="noopener" class="social-link" title="WhatsApp">💬</a>
+            <a href="tel:+447796016991" class="social-link" title="Call">📞</a>
+            <a href="https://maps.app.goo.gl/7LpnG7Z3EhNKYD8K6" target="_blank" rel="noopener" class="social-link" title="Google Maps">🗺️</a>
+          </div>
+        </div>
+
+        <div class="booking-form reveal">
+          <h3>Reserve a Table</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" placeholder="Your first name" />
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" placeholder="Your last name" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="+44 ..." />
+            </div>
+            <div class="form-group">
+              <label for="guests">Guests</label>
+              <select id="guests">
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+                <option selected>2–4 Guests</option>
+                <option>4–6 Guests</option>
+                <option>6–10 Guests</option>
+                <option>10+ (Private Event)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" />
+            </div>
+            <div class="form-group">
+              <label for="time">Preferred Time</label>
+              <select id="time">
+                <option>12:00 pm</option>
+                <option>1:00 pm</option>
+                <option>2:00 pm</option>
+                <option>6:00 pm</option>
+                <option>7:00 pm</option>
+                <option>8:00 pm</option>
+                <option>9:00 pm</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="notes">Special Requests</label>
+            <textarea id="notes" placeholder="Allergies, occasions, seating preferences..."></textarea>
+          </div>
+          <button class="form-submit" onclick="handleBooking()">Confirm Reservation</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <div id="map-section">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.8!2d-0.1432!3d51.5200!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761ad9c7c65c35%3A0x1d9f9d!2s22%20Great%20Portland%20St%2C%20London%20W1W%208QS%2C%20UK!5e0!3m2!1sen!2s!4v1"
+      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      title="Faros Oxford Circus Location">
+    </iframe>
+    <div class="map-overlay">
+      <h4>Faros Oxford Circus 🇮🇹</h4>
+      <p>22 Great Portland St<br>London W1W 8QS<br>2 min from Oxford Circus tube</p>
+      <a href="https://maps.app.goo.gl/7LpnG7Z3EhNKYD8K6" target="_blank" rel="noopener">Get Directions →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">Faros <span>Oxford Circus</span> 🇮🇹</div>
+        <p>Modern Mediterranean & Italian cuisine in the heart of London. Seasonal ingredients, soulful cooking, warm hospitality.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/farosrestaurant/" target="_blank" rel="noopener" class="social-link" title="Instagram">📸</a>
+          <a href="https://wa.me/447796016991" target="_blank" rel="noopener" class="social-link" title="WhatsApp">💬</a>
+          <a href="tel:+447796016991" class="social-link" title="Phone">📞</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#menu">Our Menu</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://www.farosrestaurant.co.uk" target="_blank">Full Website</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Opening Hours</h4>
+        <ul>
+          <li><a>Mon – Fri: 12pm – 11pm</a></li>
+          <li><a>Saturday: 11am – 11pm</a></li>
+          <li><a>Sunday: 11am – 10pm</a></li>
+          <li><a>Kitchen closes 30 min before</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <address>
+          22 Great Portland St<br>
+          London W1W 8QS<br>
+          United Kingdom<br><br>
+          <a href="tel:+447796016991" style="color:rgba(255,255,255,.42);transition:.3s" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(255,255,255,.42)'">+44 7796 016991</a><br>
+          <a href="https://wa.me/447796016991" target="_blank" style="color:#25D366;font-size:.78rem">WhatsApp Us</a>
+        </address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Faros Restaurant London. All Rights Reserved.</span>
+      <span class="dev-credit">Designed &amp; Developed by <strong>Haseeb Mazhar</strong></span>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOATING BUTTON -->
+  <a href="https://wa.me/447796016991" target="_blank" rel="noopener" class="whatsapp-float" title="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </a>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✅ Your reservation request has been sent!</div>
+
+  <script>
+    /* Navbar scroll effect */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* Mobile menu */
+    const hamburger = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenu  = document.getElementById('closeMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    closeMenu.addEventListener('click', closeNav);
+    function closeNav() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* Menu tabs */
+    function switchTab(id) {
+      document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    /* Scroll reveal */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    /* Booking form */
+    function handleBooking() {
+      const name  = document.getElementById('fname').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const date  = document.getElementById('date').value;
+      if (!name || !phone || !date) {
+        alert('Please fill in your name, phone, and date to continue.');
+        return;
+      }
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+      /* For production: replace with a real form submission / backend call */
+    }
+
+    /* Set min date for booking */
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.setAttribute('min', today);
+    }
+  </script>
+
+</body>
+</html>
