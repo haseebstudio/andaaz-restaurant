@@ -1,2 +1,1 @@
-# andaaz-restaurant
-A modern and fully responsive restaurant website for Andaaz Restaurant Lahore, designed with elegant Mughal-inspired styling, smooth animations, interactive sections, and a premium dining experience layout. Built using clean HTML, CSS, and JavaScript, optimized for GitHub Pages and Netlify hosting.
+# A premium and fully responsive restaurant website for Andaaz Restaurant Lahore, inspired by the rich culture and flavours of the Walled City. Designed with elegant Mughal-style aesthetics.
